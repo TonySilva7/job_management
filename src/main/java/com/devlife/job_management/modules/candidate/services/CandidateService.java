@@ -1,5 +1,7 @@
 package com.devlife.job_management.modules.candidate.services;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.devlife.job_management.exceptions.UserFoundException;
@@ -23,5 +25,11 @@ public class CandidateService {
     });
 
     return this.candidateRepository.save(candidateEntity);
+  }
+
+  public List<CandidateEntity> getCandidates() {
+    List<CandidateEntity> candidates = this.candidateRepository.findAll();
+
+    return candidates;
   }
 }
