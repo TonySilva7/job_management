@@ -1,5 +1,7 @@
 package com.devlife.job_management.modules.company.services;
 
+import java.util.UUID;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,5 +33,11 @@ public class CompanyService {
     List<Company> companies = this.companyRepository.findAll();
     
     return companies;
+  }
+
+  public Optional<Company> getCompanyById(String id) {
+    UUID uuid = UUID.fromString(id);
+
+    return this.companyRepository.findById(uuid);
   }
 }

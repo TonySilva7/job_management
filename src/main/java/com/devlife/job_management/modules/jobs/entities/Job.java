@@ -17,13 +17,18 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Entity
 @Table(name = "tb_job")
 @Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
 public class Job {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
+  @EqualsAndHashCode.Include
   private UUID id;
   private String description;
   private String benefits;
@@ -33,12 +38,8 @@ public class Job {
 
   @ManyToOne
   @JoinColumn(name = "company_id", nullable = false)
-  // @JoinColumn(name = "company_id", insertable = false, updatable = false)
-  // @JsonBackReference
+  @JsonBackReference
   private Company company;
-
-  // @Column(name = "company_id")
-  // private UUID companyId;
 
   @CreationTimestamp
   private OffsetDateTime createdAt;
