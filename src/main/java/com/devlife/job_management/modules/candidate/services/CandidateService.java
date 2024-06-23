@@ -9,6 +9,7 @@ import com.devlife.job_management.modules.candidate.entities.CandidateEntity;
 import com.devlife.job_management.modules.candidate.repositories.CandidateRepository;
 
 import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -16,6 +17,7 @@ public class CandidateService {
 
   private CandidateRepository candidateRepository;
 
+  @Transactional
   public CandidateEntity create(CandidateEntity candidateEntity) {
     String username = candidateEntity.getUsername();
     String email = candidateEntity.getEmail();
@@ -28,8 +30,7 @@ public class CandidateService {
   }
 
   public List<CandidateEntity> getCandidates() {
-    List<CandidateEntity> candidates = this.candidateRepository.findAll();
 
-    return candidates;
+      return this.candidateRepository.findAll();
   }
 }

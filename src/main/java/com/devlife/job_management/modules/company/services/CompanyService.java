@@ -30,14 +30,13 @@ public class CompanyService {
   }
 
   public List<Company> getAllCompanies() {
-    List<Company> companies = this.companyRepository.findAll();
-    
-    return companies;
+
+      return this.companyRepository.findAll();
   }
 
   public Optional<Company> getCompanyById(String id) {
     UUID uuid = UUID.fromString(id);
 
-    return this.companyRepository.findById(uuid);
+    return companyRepository.findById(uuid);
   }
 }

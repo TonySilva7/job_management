@@ -1,22 +1,14 @@
 package com.devlife.job_management.modules.company.controllers;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.devlife.job_management.modules.company.entities.Company;
 import com.devlife.job_management.modules.company.services.CompanyService;
-
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/companies")
@@ -45,13 +37,9 @@ public class CompanyController {
 
   @GetMapping("/{id}")
   public ResponseEntity<Company> getCompany(@PathVariable String id) {
-    Optional<Company> optional = companyService.getCompanyById(id);
+    var optional = companyService.getCompanyById(id);
 
-    if (optional.isPresent()) {
-      return ResponseEntity.status(HttpStatus.OK).body(optional.get());
-    }
-
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    return optional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
   }
 
 }
