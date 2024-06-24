@@ -1,13 +1,13 @@
-package com.devlife.job_management.modules.company.services;
+package com.devlife.job_management.domain.service;
 
 import java.util.UUID;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import com.devlife.job_management.exceptions.UserFoundException;
-import com.devlife.job_management.modules.company.entities.Company;
-import com.devlife.job_management.modules.company.repositories.CompanyRepository;
+import com.devlife.job_management.domain.exception.UserAlreadyExistsException;
+import com.devlife.job_management.domain.model.Company;
+import com.devlife.job_management.domain.repository.CompanyRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -23,7 +23,7 @@ public class CompanyService {
     String email = companyEntity.getEmail();
 
     this.companyRepository.findByUsernameOrEmail(username, email).ifPresent((user) -> {
-      throw new UserFoundException("Usuário já existe!");
+      throw new UserAlreadyExistsException("Usuário já existe!");
     });
 
     return this.companyRepository.save(companyEntity);

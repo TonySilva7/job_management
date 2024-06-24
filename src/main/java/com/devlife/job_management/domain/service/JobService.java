@@ -1,11 +1,11 @@
-package com.devlife.job_management.modules.jobs.Services;
+package com.devlife.job_management.domain.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.devlife.job_management.modules.jobs.entities.Job;
-import com.devlife.job_management.modules.jobs.repositories.JobRepository;
+import com.devlife.job_management.domain.model.Job;
+import com.devlife.job_management.domain.repository.JobRepository;
 
 import lombok.AllArgsConstructor;
 

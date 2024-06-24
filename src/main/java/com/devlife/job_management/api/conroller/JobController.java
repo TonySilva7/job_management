@@ -1,4 +1,4 @@
-package com.devlife.job_management.modules.jobs.Controllers;
+package com.devlife.job_management.api.conroller;
 
 import java.util.List;
 
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.devlife.job_management.modules.jobs.Services.JobService;
-import com.devlife.job_management.modules.jobs.entities.Job;
+import com.devlife.job_management.domain.service.JobService;
+import com.devlife.job_management.domain.model.Job;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

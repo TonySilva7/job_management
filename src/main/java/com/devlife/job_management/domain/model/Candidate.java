@@ -1,8 +1,10 @@
-package com.devlife.job_management.modules.candidate.entities;
+package com.devlife.job_management.domain.model;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 
@@ -13,18 +15,25 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
-import lombok.Data;
 
-@Data
+
 @Entity
 @Table(name = "tb_candidate")
-public class CandidateEntity {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class Candidate {
+
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
+  @EqualsAndHashCode.Include
   private UUID id;
 
   private String name;
 
+  @NotBlank(message = "O campo [username] é obrigatório")
   @Pattern(regexp = "\\S+", message = "O campo [username] não pode ter espaços")
   private String username;
 

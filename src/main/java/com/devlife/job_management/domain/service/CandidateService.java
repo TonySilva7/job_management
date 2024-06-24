@@ -1,12 +1,12 @@
-package com.devlife.job_management.modules.candidate.services;
+package com.devlife.job_management.domain.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.devlife.job_management.exceptions.UserFoundException;
-import com.devlife.job_management.modules.candidate.entities.CandidateEntity;
-import com.devlife.job_management.modules.candidate.repositories.CandidateRepository;
+import com.devlife.job_management.domain.exception.UserAlreadyExistsException;
+import com.devlife.job_management.domain.model.Candidate;
+import com.devlife.job_management.domain.repository.CandidateRepository;
 
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,18 +18,18 @@ public class CandidateService {
   private CandidateRepository candidateRepository;
 
   @Transactional
-  public CandidateEntity create(CandidateEntity candidateEntity) {
+  public Candidate create(Candidate candidateEntity) {
     String username = candidateEntity.getUsername();
     String email = candidateEntity.getEmail();
 
     this.candidateRepository.findByUsernameOrEmail(username, email).ifPresent((user) -> {
-      throw new UserFoundException("Usuário já existe!");
+      throw new UserAlreadyExistsException("Usuário já existe!");
     });
 
     return this.candidateRepository.save(candidateEntity);
   }
 
-  public List<CandidateEntity> getCandidates() {
+  public List<Candidate> getCandidates() {
 
       return this.candidateRepository.findAll();
   }

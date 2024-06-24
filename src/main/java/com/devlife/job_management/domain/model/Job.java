@@ -1,11 +1,11 @@
-package com.devlife.job_management.modules.jobs.entities;
+package com.devlife.job_management.domain.model;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.devlife.job_management.modules.company.entities.Company;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Entity;
@@ -16,16 +16,16 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 @Entity
 @Table(name = "tb_job")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString(onlyExplicitlyIncluded = true)
 public class Job {
+
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   @EqualsAndHashCode.Include

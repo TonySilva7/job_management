@@ -1,14 +1,14 @@
-package com.devlife.job_management.modules.company.entities;
+package com.devlife.job_management.domain.model;
 
 import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 
-import com.devlife.job_management.modules.jobs.entities.Job;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -23,15 +23,14 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 @Entity
 @Table(name = "tb_company")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString(onlyExplicitlyIncluded = true)
 public class Company {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
@@ -41,11 +40,10 @@ public class Company {
   @NotNull(message = "O campo [username] não pode ser vazio")
   @Column(nullable = false)
   @Pattern(regexp = "\\S+", message = "O campo [username] não pode ter espaços")
-  @ToString.Include
+
   private String username;
 
   @Email(message = "O campo [email] deve conter um email válido")
-  @ToString.Include
   private String email;
 
   @Length(min = 10, max = 100, message = "O campo [password] deve conter entre 10 e 100 caracteres")

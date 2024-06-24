@@ -1,7 +1,7 @@
-package com.devlife.job_management.modules.company.controllers;
+package com.devlife.job_management.api.conroller;
 
-import com.devlife.job_management.modules.company.entities.Company;
-import com.devlife.job_management.modules.company.services.CompanyService;
+import com.devlife.job_management.domain.model.Company;
+import com.devlife.job_management.domain.service.CompanyService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
