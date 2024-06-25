@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.naming.AuthenticationException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,32 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         OffsetDateTime datetime = OffsetDateTime.now();
         String errorMessage = ex.getMessage();
         String title = "Um ou mais erros ocorreram!";
+
+        FieldErrors fieldErrors = new FieldErrors(uri, errorMessage);
+
+        List<FieldErrors> fieldErrorsList = new ArrayList<>();
+        fieldErrorsList.add(fieldErrors);
+
+        DefaultError defaultError = new DefaultError(status.value(), datetime, title, fieldErrorsList);
+
+
+        return handleExceptionInternal(ex, defaultError, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    protected ResponseEntity<Object> handleAuthException(AuthenticationException ex, WebRequest request) {
+
+
+        String uri = request.getDescription(false);
+
+        if (uri.startsWith("uri=")) {
+            uri = uri.substring(4);
+        }
+
+        HttpStatusCode status = HttpStatus.UNAUTHORIZED;
+        OffsetDateTime datetime = OffsetDateTime.now();
+        String errorMessage = ex.getMessage();
+        String title = "Acesso não autorizado";
 
         FieldErrors fieldErrors = new FieldErrors(uri, errorMessage);
 
