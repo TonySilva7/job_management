@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.naming.AuthenticationException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -41,9 +42,10 @@ public class AuthCandidateService {
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         Instant expiresIn = Instant.now().plus(Duration.ofMinutes(10));
 
-        var token = JWT.create().withIssuer("devlife vagas")
+        var token = JWT.create()
+                .withIssuer("devlife vagas")
                 .withExpiresAt(expiresIn)
-//                .withClaim("role", "CANDIDATE")
+                .withClaim("roles", List.of("CANDIDATE"))
                 .withSubject(candidate.getId().toString())
                 .sign(algorithm);
 

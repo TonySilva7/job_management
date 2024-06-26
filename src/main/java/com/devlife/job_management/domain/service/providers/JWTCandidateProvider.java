@@ -23,7 +23,6 @@ public class JWTCandidateProvider {
             DecodedJWT decodedJWT = JWT.require(algorithm)
                     .build()
                     .verify(token);
-//                .getSubject();
 
             return decodedJWT;
         } catch (JWTVerificationException e) {

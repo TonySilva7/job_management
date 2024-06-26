@@ -34,22 +34,23 @@ public class SecurityFilterCompany extends OncePerRequestFilter {
             String authHeader = request.getHeader("Authorization");
 
             if (authHeader != null) {
-                var subjectToken = this.jwtCompanyProvider.validateToken(authHeader);
+                var token = this.jwtCompanyProvider.validateToken(authHeader);
 
-                if (subjectToken.isEmpty()) {
+                if (token == null) {
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
 
                     return;
                 }
 
+                String subjectToken = token.getSubject();
+
                 request.setAttribute("company_id", subjectToken);
 
-                Collection<GrantedAuthority> authorities = Arrays.asList(
-                        new SimpleGrantedAuthority("COMPANY"),
-                        new SimpleGrantedAuthority("CANDIDATE")
-                );
+                var roles = token.getClaim("roles").asList(Object.class);
 
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(subjectToken, null, Collections.emptyList());
+                var authorities = roles.stream().map((role) -> new SimpleGrantedAuthority("ROLE_" + role.toString())).toList();
+
+                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(subjectToken, null, authorities);
 
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }

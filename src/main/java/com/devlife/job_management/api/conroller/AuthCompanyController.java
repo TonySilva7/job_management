@@ -21,11 +21,9 @@ public class AuthCompanyController {
     @PostMapping("/company")
     public ResponseEntity<Object> handleAuthCompany(@RequestBody AuthCompanyDTO authCompanyDTO) throws AuthenticationException {
 
-        String token = authCompanyService.authenticate(authCompanyDTO);
-        AuthCompanyResDTO resToken = new AuthCompanyResDTO(token);
-
-        return ResponseEntity.ok(resToken);
+        AuthCompanyResDTO token = authCompanyService.authenticate(authCompanyDTO);
 
 
+        return ResponseEntity.ok(token);
     }
 };

@@ -3,6 +3,7 @@ package com.devlife.job_management.domain.service.auth;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.devlife.job_management.api.model.AuthCompanyDTO;
+import com.devlife.job_management.api.model.AuthCompanyResDTO;
 import com.devlife.job_management.domain.model.Company;
 import com.devlife.job_management.domain.repository.CompanyRepository;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,7 @@ public class AuthCompanyService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public String authenticate(AuthCompanyDTO authCompanyDTO) throws AuthenticationException {
+    public AuthCompanyResDTO authenticate(AuthCompanyDTO authCompanyDTO) throws AuthenticationException {
         String username = authCompanyDTO.getUsername();
         String rawPassword = authCompanyDTO.getPassword();
 
@@ -42,12 +43,16 @@ public class AuthCompanyService {
             throw new AuthenticationException("Usuário ou Senha inválida");
         }
 
+        Instant expiresIn = Instant.now().plus(Duration.ofHours(2));
+
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
 
-        return JWT.create().withIssuer("devlife vagas")
-                .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
+        String jwtToken = JWT.create().withIssuer("devlife vagas")
+                .withExpiresAt(expiresIn)
                 .withSubject(company.getId().toString())
-//                .withClaim("role", "COMPANY")
+                .withClaim("roles", List.of("COMPANY"))
                 .sign(algorithm);
+
+        return AuthCompanyResDTO.builder().access_token(jwtToken).expires_in(expiresIn.toEpochMilli()).build();
     }
 }
