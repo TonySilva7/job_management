@@ -14,6 +14,14 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    private static final String[] AUTH_WHITELIST = {
+            "/v3/api-docs/**",
+            "/swagger-ui.html",
+            "/swagger-ui/**",
+            "/h2-console/**",
+            "/v3/**"
+    };
+
     private final SecurityFilterCompany securityFilterCompany;
 
     private final SecurityCandidateFilter securityCandidateFilter;
@@ -31,6 +39,7 @@ public class SecurityConfig {
                         .requestMatchers("/candidates/signup").permitAll()
                         .requestMatchers("/companies/signup").permitAll()
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers(AUTH_WHITELIST).permitAll()
 
                         .requestMatchers("/companies/**").authenticated()
                         .requestMatchers("/candidates/**").authenticated()

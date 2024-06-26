@@ -43,7 +43,8 @@ dependencies {
     // Mappers
     implementation 'org.modelmapper:modelmapper:3.0.0'
 
-
+    // Docs
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
 }
 
 tasks.named('test') {

@@ -23,4 +23,10 @@ public class JobService {
   public List<Job> getAllJobs() {
     return this.jobRepository.findAll();
   }
+
+  public List<Job> getJobsByFilter(String filter) {
+    return this.jobRepository.findByDescriptionContainingIgnoreCase(filter);
+  }
+
+
 }

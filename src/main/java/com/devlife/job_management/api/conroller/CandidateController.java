@@ -2,7 +2,17 @@ package com.devlife.job_management.api.conroller;
 
 import com.devlife.job_management.api.model.ProfileCandidateDTO;
 import com.devlife.job_management.domain.model.Candidate;
+import com.devlife.job_management.domain.model.Job;
 import com.devlife.job_management.domain.service.CandidateService;
+import com.devlife.job_management.domain.service.JobService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -19,6 +29,7 @@ import java.util.List;
 public class CandidateController {
 
     private CandidateService candidateService;
+    private JobService jobService;
 
     @PostMapping("/signup")
     public ResponseEntity<Object> createCandidate(@Valid @RequestBody Candidate candidateEntity) {
@@ -52,6 +63,31 @@ public class CandidateController {
         ProfileCandidateDTO profile = this.candidateService.getProfile(candidateId.toString());
 
         return ResponseEntity.ok(profile);
+    }
+
+
+    @GetMapping("/jobs/all")
+    @PreAuthorize("hasRole('CANDIDATE')")
+    public ResponseEntity<List<Job>> getAllJobs() {
+        var jobs = this.jobService.getAllJobs();
+
+        return ResponseEntity.ok(jobs);
+    }
+
+
+    @Tag(name = "Candidato", description = "Informações do candidato")
+    @Operation(summary = "Listagem de vagas disponível para o candidato", description = "Essa função é responsável por listar todas as vagas disponíveis, baseada no filtro")
+    @SecurityRequirement(name = "jwt_auth")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", content = {
+                    @Content(array = @ArraySchema(schema = @Schema(implementation = Job.class)))
+            })
+    })
+    @GetMapping("/jobs")
+    public ResponseEntity<List<Job>> findJobByFilter(@RequestParam String filter) {
+        var jobs = this.jobService.getJobsByFilter(filter);
+
+        return ResponseEntity.ok(jobs);
     }
 
 }
