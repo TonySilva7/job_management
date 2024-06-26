@@ -17,7 +17,7 @@ public class CompanyController {
 
     private CompanyService companyService;
 
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity<Object> createCompany(@Valid @RequestBody Company companyEntity) {
 
         Company company = companyService.create(companyEntity);
@@ -35,9 +35,9 @@ public class CompanyController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Company> getCompany(@PathVariable String id) {
-        var optional = companyService.getCompanyById(id);
+        var company = companyService.getCompanyById(id);
 
-        return optional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(company);
     }
 
 }

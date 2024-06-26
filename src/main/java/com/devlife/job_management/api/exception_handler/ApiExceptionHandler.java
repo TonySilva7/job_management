@@ -1,5 +1,6 @@
 package com.devlife.job_management.api.exception_handler;
 
+import com.devlife.job_management.domain.exception.ResourceNotFoundException;
 import com.devlife.job_management.domain.exception.UserAlreadyExistsException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +39,32 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         }
 
         HttpStatusCode status = HttpStatus.BAD_REQUEST;
+        OffsetDateTime datetime = OffsetDateTime.now();
+        String errorMessage = ex.getMessage();
+        String title = "Um ou mais erros ocorreram!";
+
+        FieldErrors fieldErrors = new FieldErrors(uri, errorMessage);
+
+        List<FieldErrors> fieldErrorsList = new ArrayList<>();
+        fieldErrorsList.add(fieldErrors);
+
+        DefaultError defaultError = new DefaultError(status.value(), datetime, title, fieldErrorsList);
+
+
+        return handleExceptionInternal(ex, defaultError, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    protected ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
+
+
+        String uri = request.getDescription(false);
+
+        if (uri.startsWith("uri=")) {
+            uri = uri.substring(4);
+        }
+
+        HttpStatusCode status = HttpStatus.NOT_FOUND;
         OffsetDateTime datetime = OffsetDateTime.now();
         String errorMessage = ex.getMessage();
         String title = "Um ou mais erros ocorreram!";

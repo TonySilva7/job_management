@@ -1,9 +1,9 @@
 package com.devlife.job_management.api.auth;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -12,23 +12,30 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @Configuration
 public class SecurityConfig {
 
-    @Autowired
-    private final SecurityFilter securityFilter;
+    private final SecurityFilterCompany securityFilterCompany;
 
-    public SecurityConfig(SecurityFilter securityFilter) {
-        this.securityFilter = securityFilter;
+    private final SecurityCandidateFilter securityCandidateFilter;
+
+    public SecurityConfig(SecurityFilterCompany securityFilterCompany, SecurityCandidateFilter securityCandidateFilter) {
+        this.securityFilterCompany = securityFilterCompany;
+        this.securityCandidateFilter = securityCandidateFilter;
     }
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
+
+        http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/auth/**").permitAll()
-                                .requestMatchers("/candidates").permitAll()
-                                .requestMatchers("/companies").permitAll()
-                                .requestMatchers("/auth/**").permitAll()
-                                .anyRequest().authenticated()
-                ).addFilterBefore(securityFilter, BasicAuthenticationFilter.class);
+                        .requestMatchers("/candidates/signup").permitAll()
+                        .requestMatchers("/companies/signup").permitAll()
+                        .requestMatchers("/auth/**").permitAll()
+
+                        .requestMatchers("/companies/**").authenticated()
+                        .requestMatchers("/candidates/**").authenticated()
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(securityCandidateFilter, BasicAuthenticationFilter.class)
+                .addFilterBefore(securityFilterCompany, BasicAuthenticationFilter.class);
 
 
         return http.build();

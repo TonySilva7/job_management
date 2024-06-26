@@ -1,9 +1,7 @@
 package com.devlife.job_management.api.model;
 
 import com.devlife.job_management.domain.model.Candidate;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
 import java.util.UUID;

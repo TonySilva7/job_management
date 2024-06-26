@@ -1,19 +1,18 @@
 package com.devlife.job_management.domain.service;
 
-import java.util.List;
-import java.util.UUID;
-
 import com.devlife.job_management.api.model.ProfileCandidateDTO;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
+import com.devlife.job_management.domain.exception.ResourceNotFoundException;
 import com.devlife.job_management.domain.exception.UserAlreadyExistsException;
 import com.devlife.job_management.domain.model.Candidate;
 import com.devlife.job_management.domain.repository.CandidateRepository;
-
+import com.devlife.job_management.domain.service.providers.MapperProvider;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -45,8 +44,8 @@ public class CandidateService {
     public ProfileCandidateDTO getProfile(String id) {
         UUID uuid = UUID.fromString(id);
 
-        var candidate = candidateRepository.findById(uuid).orElseThrow(() -> new UsernameNotFoundException("Candidato não encontrado"));
+        var candidate = candidateRepository.findById(uuid).orElseThrow(() -> new ResourceNotFoundException("Candidato não encontrado"));
 
-        return ProfileCandidateDTO.toDTO(candidate);
+        return MapperProvider.fromTo(candidate, ProfileCandidateDTO.class);
     }
 }

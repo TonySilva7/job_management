@@ -22,14 +22,14 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/jobs")
+@RequestMapping("/companies/job")
 @AllArgsConstructor
 public class JobController {
 
   private JobService jobService;
   private CompanyService companyService;
 
-  @PostMapping("/")
+  @PostMapping
   public ResponseEntity<Object> createJob(@Valid @RequestBody JobRequestDTO jobRequestDto, HttpServletRequest request) {
     try {
       var companyId = request.getAttribute("company_id");
@@ -38,8 +38,7 @@ public class JobController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Company not found");
       }
 
-      var c = companyService.getCompanyById(companyId.toString())
-          .orElseThrow(() -> new EntityNotFoundException("Company not found"));
+      var c = companyService.getCompanyById(companyId.toString());
 
       Job job = JobRequestDTO.toEntity(jobRequestDto);
 
@@ -55,7 +54,7 @@ public class JobController {
     }
   }
 
-  @GetMapping("/")
+  @GetMapping
   public ResponseEntity<List<Job>> getMethodName() {
     return ResponseEntity.status(HttpStatus.OK).body(jobService.getAllJobs());
   }

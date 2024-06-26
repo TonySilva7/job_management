@@ -1,18 +1,15 @@
 package com.devlife.job_management.domain.service;
 
-import java.util.UUID;
-import java.util.Optional;
-
+import com.devlife.job_management.domain.exception.ResourceNotFoundException;
+import com.devlife.job_management.domain.exception.UserAlreadyExistsException;
+import com.devlife.job_management.domain.model.Company;
+import com.devlife.job_management.domain.repository.CompanyRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import com.devlife.job_management.domain.exception.UserAlreadyExistsException;
-import com.devlife.job_management.domain.model.Company;
-import com.devlife.job_management.domain.repository.CompanyRepository;
-
-import lombok.AllArgsConstructor;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -41,9 +38,10 @@ public class CompanyService {
         return this.companyRepository.findAll();
     }
 
-    public Optional<Company> getCompanyById(String id) {
+    public Company getCompanyById(String id) {
         UUID uuid = UUID.fromString(id);
 
-        return companyRepository.findById(uuid);
+        return companyRepository.findById(uuid).orElseThrow(() -> new ResourceNotFoundException("Companhia não encontrada"));
+
     }
 }

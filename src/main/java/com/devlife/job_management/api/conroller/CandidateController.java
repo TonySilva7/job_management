@@ -1,17 +1,16 @@
 package com.devlife.job_management.api.conroller;
 
-import java.util.List;
-
 import com.devlife.job_management.api.model.ProfileCandidateDTO;
+import com.devlife.job_management.domain.model.Candidate;
+import com.devlife.job_management.domain.service.CandidateService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.devlife.job_management.domain.model.Candidate;
-import com.devlife.job_management.domain.service.CandidateService;
-
-import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import java.util.List;
 
 @RestController
 @RequestMapping("/candidates")
@@ -20,8 +19,8 @@ public class CandidateController {
 
     private CandidateService candidateService;
 
-    @PostMapping
-    public ResponseEntity<Object> create(@Valid @RequestBody Candidate candidateEntity) {
+    @PostMapping("/signup")
+    public ResponseEntity<Object> createCandidate(@Valid @RequestBody Candidate candidateEntity) {
 
         Candidate candidate = candidateService.create(candidateEntity);
 
@@ -41,8 +40,14 @@ public class CandidateController {
 
         ProfileCandidateDTO profile = this.candidateService.getProfile(id);
 
-        // print `profile`
-        System.out.println("ENTROOOOOOU");
+        return ResponseEntity.ok(profile);
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<Object> getProfile2(HttpServletRequest request) {
+        var candidateId = request.getAttribute("candidate_id");
+
+        ProfileCandidateDTO profile = this.candidateService.getProfile(candidateId.toString());
 
         return ResponseEntity.ok(profile);
     }

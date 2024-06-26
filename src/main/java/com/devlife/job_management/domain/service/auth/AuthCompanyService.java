@@ -47,7 +47,7 @@ public class AuthCompanyService {
         return JWT.create().withIssuer("devlife vagas")
                 .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
                 .withSubject(company.getId().toString())
-                .withClaim("role", "COMPANY")
+//                .withClaim("role", "COMPANY")
                 .sign(algorithm);
     }
 }
