@@ -1,6 +1,7 @@
 package com.devlife.job_management.api.conroller;
 
 import com.devlife.job_management.api.model.AuthCompanyDTO;
+import com.devlife.job_management.api.model.AuthCompanyResDTO;
 import com.devlife.job_management.domain.service.auth.AuthCompanyService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +22,10 @@ public class AuthCompanyController {
     public ResponseEntity<Object> handleAuthCompany(@RequestBody AuthCompanyDTO authCompanyDTO) throws AuthenticationException {
 
         String token = authCompanyService.authenticate(authCompanyDTO);
+        AuthCompanyResDTO resToken = new AuthCompanyResDTO(token);
 
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok(resToken);
 
 
     }
-}
+};

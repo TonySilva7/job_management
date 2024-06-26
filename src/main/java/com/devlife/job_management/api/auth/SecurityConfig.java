@@ -26,7 +26,7 @@ public class SecurityConfig {
 //                        .requestMatchers("/auth/**").permitAll()
                                 .requestMatchers("/candidates").permitAll()
                                 .requestMatchers("/companies").permitAll()
-                                .requestMatchers("/auth/company").permitAll()
+                                .requestMatchers("/auth/**").permitAll()
                                 .anyRequest().authenticated()
                 ).addFilterBefore(securityFilter, BasicAuthenticationFilter.class);
 

@@ -17,7 +17,7 @@ public class CompanyController {
 
     private CompanyService companyService;
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<Object> createCompany(@Valid @RequestBody Company companyEntity) {
 
         Company company = companyService.create(companyEntity);
@@ -26,7 +26,7 @@ public class CompanyController {
 
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<Company>> getMethodName() {
         List<Company> companies = companyService.getAllCompanies();
 

@@ -15,10 +15,11 @@ import org.springframework.stereotype.Service;
 import javax.naming.AuthenticationException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
 
 @Service
 public class AuthCompanyService {
-    @Value("${security.token.secret}")
+    @Value("${security.token.secret.company}")
     private String secretKey;
 
     @Autowired
@@ -46,6 +47,7 @@ public class AuthCompanyService {
         return JWT.create().withIssuer("devlife vagas")
                 .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
                 .withSubject(company.getId().toString())
+                .withClaim("role", "COMPANY")
                 .sign(algorithm);
     }
 }

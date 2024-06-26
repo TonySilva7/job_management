@@ -2,13 +2,10 @@ package com.devlife.job_management.api.conroller;
 
 import java.util.List;
 
+import com.devlife.job_management.api.model.ProfileCandidateDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.devlife.job_management.domain.model.Candidate;
 import com.devlife.job_management.domain.service.CandidateService;
@@ -21,25 +18,33 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CandidateController {
 
-  private CandidateService candidateService;
+    private CandidateService candidateService;
 
-  @PostMapping("/")
-  public ResponseEntity<Object> create(@Valid @RequestBody Candidate candidateEntity) {
-//    try {
-      Candidate candidate = candidateService.create(candidateEntity);
+    @PostMapping
+    public ResponseEntity<Object> create(@Valid @RequestBody Candidate candidateEntity) {
 
-      return ResponseEntity.status(HttpStatus.CREATED).body(candidate);
-//    } catch (Exception e) {
-//      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-//    }
-  }
+        Candidate candidate = candidateService.create(candidateEntity);
 
-  @GetMapping("/")
-  public ResponseEntity<List<Candidate>> getCandidates() {
+        return ResponseEntity.status(HttpStatus.CREATED).body(candidate);
+    }
 
-    List<Candidate> candidates = this.candidateService.getCandidates();
+    @GetMapping
+    public ResponseEntity<List<Candidate>> getCandidates() {
 
-    return ResponseEntity.status(HttpStatus.OK).body(candidates);
-  }
+        List<Candidate> candidates = this.candidateService.getCandidates();
+
+        return ResponseEntity.status(HttpStatus.OK).body(candidates);
+    }
+
+    @GetMapping("/profile/{id}")
+    public ResponseEntity<Object> getProfile(@PathVariable(name = "id") String id) {
+
+        ProfileCandidateDTO profile = this.candidateService.getProfile(id);
+
+        // print `profile`
+        System.out.println("ENTROOOOOOU");
+
+        return ResponseEntity.ok(profile);
+    }
 
 }

@@ -8,12 +8,18 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Component
 @AllArgsConstructor
@@ -37,6 +43,11 @@ public class SecurityFilter extends OncePerRequestFilter {
            }
 
            request.setAttribute("company_id", subjectToken);
+
+            Collection<GrantedAuthority> authorities = Arrays.asList(
+                    new SimpleGrantedAuthority("COMPANY"),
+                    new SimpleGrantedAuthority("CANDIDATE")
+            );
 
            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(subjectToken, null, Collections.emptyList());
 
